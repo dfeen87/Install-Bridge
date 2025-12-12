@@ -1,0 +1,55 @@
+{
+  "name": "install-bridge",
+  "version": "0.1.0",
+  "description": "Turn repositories into portable install surfaces",
+  "type": "commonjs",
+
+  "main": "core.js",
+  "bin": {
+    "install-bridge": "cli.js"
+  },
+
+  "scripts": {
+    "test": "node core.test.js",
+    "start": "node server.js",
+    "server": "node server.js",
+    "dev": "node server.js"
+  },
+
+  "keywords": [
+    "install",
+    "installer",
+    "badge",
+    "distribution",
+    "repository",
+    "open-source",
+    "cli",
+    "http"
+  ],
+
+  "author": "Don Feeney",
+  "license": "MIT",
+
+  "engines": {
+    "node": ">=14.0.0"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dfeen87/install-bridge.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/dfeen87/install-bridge/issues"
+  },
+
+  "homepage": "https://github.com/dfeen87/install-bridge",
+
+  "files": [
+    "core.js",
+    "core.test.js",
+    "cli.js",
+    "server.js",
+    "demo.html"
+  ]
+}
