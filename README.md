@@ -23,6 +23,8 @@ The guiding principles are simple:
 
 Install Bridge is intentionally calm. It does not try to manage users, rank projects, collect analytics, or lock anyone in. It exists to make sharing software easier — and then get out of the way.
 
+*Install Bridge prioritizes transparency—developers publish clear install links, and users are encouraged to review the source and releases before installing.*
+
 ---
 
 ## What Install Bridge Does
