@@ -1,0 +1,15 @@
+{
+  "name": "MyAwesomeApp",
+  "installers": {
+    "darwin": "https://github.com/user/myapp/releases/latest/download/MyAwesomeApp-macOS.dmg",
+    "win32": "https://github.com/user/myapp/releases/latest/download/MyAwesomeApp-windows.exe",
+    "linux": "https://github.com/user/myapp/releases/latest/download/MyAwesomeApp-linux.AppImage"
+  },
+  "homepage": "https://myawesomeapp.dev",
+  "fallback": "https://github.com/user/myapp/releases",
+  "badge": {
+    "label": "Install",
+    "color": "#0366d6",
+    "style": "flat"
+  }
+}
