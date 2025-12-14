@@ -4,16 +4,16 @@
   "description": "Turn repositories into portable install surfaces",
   "type": "commonjs",
 
-  "main": "core.js",
+  "main": "src/index.js",
   "bin": {
-    "install-bridge": "cli.js"
+    "install-bridge": "bin/install-bridge.js"
   },
 
   "scripts": {
-    "test": "node core.test.js",
-    "start": "node server.js",
-    "server": "node server.js",
-    "dev": "node server.js"
+    "test": "node test/core.test.js",
+    "start": "node src/server/server.js",
+    "server": "node src/server/server.js",
+    "dev": "node src/server/server.js"
   },
 
   "keywords": [
@@ -46,10 +46,12 @@
   "homepage": "https://github.com/dfeen87/install-bridge",
 
   "files": [
-    "core.js",
-    "core.test.js",
-    "cli.js",
-    "server.js",
-    "demo.html"
+    "bin/",
+    "src/",
+    "test/",
+    "demo/",
+    "install-bridge.json",
+    "README.md",
+    "LICENSE"
   ]
 }
