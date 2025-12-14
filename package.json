@@ -1,19 +1,16 @@
 {
   "name": "install-bridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn repositories into portable install surfaces",
   "type": "commonjs",
 
-  "main": "src/index.js",
   "bin": {
     "install-bridge": "bin/install-bridge.js"
   },
 
   "scripts": {
     "test": "node test/core.test.js",
-    "start": "node src/server/server.js",
-    "server": "node src/server/server.js",
-    "dev": "node src/server/server.js"
+    "start": "node src/server/server.js"
   },
 
   "keywords": [
