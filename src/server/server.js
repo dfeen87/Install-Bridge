@@ -6,7 +6,7 @@
 
 const http = require('http');
 const url = require('url');
-const core = require('./core');
+const core = require('../core/core');
 
 const PORT = Number(process.env.PORT) || 3000;
 const MAX_CONFIG_SIZE = 8 * 1024; // 8KB safety limit
@@ -22,6 +22,16 @@ function send(res, status, body, headers = {}) {
     ...headers
   });
   res.end(body);
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
 }
 
 function decodeConfig(param) {
@@ -102,13 +112,15 @@ function generateFallbackPage(config, detectedOS) {
 
   const installers = config.installers || {};
   const platforms = Object.keys(installers);
+  const appName = escapeHtml(config.name || 'Install');
+  const homepage = config.homepage ? escapeHtml(config.homepage) : null;
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Install ${config.name}</title>
+<title>Install ${appName}</title>
 <style>
 body {
   font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
@@ -154,18 +166,18 @@ a.btn:hover { background:#0256c1; }
 </head>
 <body>
 <div class="container">
-<h1>Install ${config.name}</h1>
+<h1>Install ${appName}</h1>
 ${detectedOS !== 'unknown'
-  ? `<p>Detected OS: ${platformNames[detectedOS] || detectedOS}</p>`
+  ? `<p>Detected OS: ${escapeHtml(platformNames[detectedOS] || detectedOS)}</p>`
   : ''}
 ${detectedOS !== 'unknown' && !installers[detectedOS]
   ? `<p class="notice">No installer available for your platform</p>`
   : ''}
 ${platforms.map(p =>
-  `<a class="btn" href="${installers[p]}">Download for ${platformNames[p] || p}</a>`
+  `<a class="btn" href="${escapeHtml(installers[p])}">Download for ${escapeHtml(platformNames[p] || p)}</a>`
 ).join('')}
-${config.homepage
-  ? `<div class="footer"><a href="${config.homepage}">Learn more →</a></div>`
+${homepage
+  ? `<div class="footer"><a href="${homepage}">Learn more →</a></div>`
   : ''}
 </div>
 </body>
