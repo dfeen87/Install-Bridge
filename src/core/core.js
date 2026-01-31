@@ -15,11 +15,30 @@ const PLATFORM_ORDER = ['darwin', 'win32', 'linux'];
 function isValidURL(value) {
   if (typeof value !== 'string') return false;
   try {
-    new URL(value);
-    return true;
+    const parsed = new URL(value);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
   } catch {
     return false;
   }
+}
+
+function escapeXml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function normalizeBadgeColor(color, fallback = '#0366d6') {
+  if (typeof color !== 'string') return fallback;
+  const trimmed = color.trim();
+  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(trimmed)) {
+    return trimmed;
+  }
+  return fallback;
 }
 
 /**
@@ -132,9 +151,9 @@ function getInstallTarget(config, os) {
  */
 function generateBadge(config) {
   const opts = config.badge || {};
-  const label = opts.label || 'Install';
-  const appName = config.name;
-  const color = opts.color || '#0366d6';
+  const label = escapeXml(opts.label || 'Install');
+  const appName = escapeXml(config.name);
+  const color = normalizeBadgeColor(opts.color);
   const style = opts.style || 'flat';
 
   const labelWidth = label.length * 6 + 10;
@@ -189,6 +208,10 @@ function generateSnippets(
     installURL ||
     config.homepage ||
     getFirstInstaller(config.installers);
+
+  if (!targetURL) {
+    return { markdown: '', html: '' };
+  }
 
   const markdown =
     `[![Install ${config.name}](${badgePath})](${targetURL})`;
