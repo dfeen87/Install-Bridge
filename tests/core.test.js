@@ -102,7 +102,7 @@ test('validateConfig: rejects invalid platform', () => {
   assert(result.errors.some(e => e.includes('invalid platform')), 'Should mention invalid platform');
 });
 
-test('validateConfig: accepts file URLs (current behavior)', () => {
+test('validateConfig: rejects file URLs', () => {
   const config = {
     name: 'TestApp',
     installers: {
@@ -110,7 +110,11 @@ test('validateConfig: accepts file URLs (current behavior)', () => {
     }
   };
   const result = core.validateConfig(config);
-  assert(result.valid === true, 'file:// URLs are currently allowed');
+  assert(result.valid === false, 'file:// URLs should be rejected');
+  assert(
+    result.errors.some(e => e.includes('valid HTTP(S) URL')),
+    'Should mention HTTP(S) requirement'
+  );
 });
 
 // ---------------------------------------------------------------------------
