@@ -10,10 +10,34 @@ const core = require('../core/core');
 
 const PORT = Number(process.env.PORT) || 3000;
 const MAX_CONFIG_SIZE = 8 * 1024; // 8KB safety limit
+const CONFIG_CACHE_LIMIT = 200;
+const BADGE_CACHE_LIMIT = 200;
+
+const configCache = new Map();
+const badgeCache = new Map();
 
 // ============================================================================
 // UTILITIES
 // ============================================================================
+
+function getFromCache(cache, key) {
+  if (!cache.has(key)) return null;
+  const value = cache.get(key);
+  cache.delete(key);
+  cache.set(key, value);
+  return value;
+}
+
+function setCache(cache, key, value, limit) {
+  if (cache.has(key)) {
+    cache.delete(key);
+  }
+  cache.set(key, value);
+  if (cache.size > limit) {
+    const oldestKey = cache.keys().next().value;
+    cache.delete(oldestKey);
+  }
+}
 
 function send(res, status, body, headers = {}) {
   res.writeHead(status, {
@@ -49,14 +73,21 @@ function decodeConfig(param) {
 
 function parseConfigFromRequest(req) {
   const params = url.parse(req.url, true).query;
-  const json = decodeConfig(params.config);
+  const encodedConfig = params.config;
+  const cached = getFromCache(configCache, encodedConfig);
+  if (cached) {
+    return { config: cached, encodedConfig };
+  }
+
+  const json = decodeConfig(encodedConfig);
   const result = core.parseConfig(json);
 
   if (!result.success) {
     throw new Error(`Invalid config: ${result.errors.join(', ')}`);
   }
 
-  return result.config;
+  setCache(configCache, encodedConfig, result.config, CONFIG_CACHE_LIMIT);
+  return { config: result.config, encodedConfig };
 }
 
 // ============================================================================
@@ -65,8 +96,18 @@ function parseConfigFromRequest(req) {
 
 function handleBadge(req, res) {
   try {
-    const config = parseConfigFromRequest(req);
+    const { config, encodedConfig } = parseConfigFromRequest(req);
+    const cachedSvg = getFromCache(badgeCache, encodedConfig);
+    if (cachedSvg) {
+      send(res, 200, cachedSvg, {
+        'Content-Type': 'image/svg+xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      });
+      return;
+    }
+
     const svg = core.generateBadge(config);
+    setCache(badgeCache, encodedConfig, svg, BADGE_CACHE_LIMIT);
 
     send(res, 200, svg, {
       'Content-Type': 'image/svg+xml; charset=utf-8',
@@ -79,7 +120,7 @@ function handleBadge(req, res) {
 
 function handleInstall(req, res) {
   try {
-    const config = parseConfigFromRequest(req);
+    const { config } = parseConfigFromRequest(req);
     const ua = req.headers['user-agent'] || '';
     const os = core.detectOS(ua);
     const target = core.getInstallTarget(config, os);
