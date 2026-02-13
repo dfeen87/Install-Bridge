@@ -94,10 +94,26 @@ function validateConfig(config) {
   }
 
   // Validate badge options if provided
-  if (config.badge && typeof config.badge === 'object') {
-    if (config.badge.label && typeof config.badge.label === 'string') {
-      if (config.badge.label.length > MAX_LABEL_LENGTH) {
-        errors.push(`badge label must not exceed ${MAX_LABEL_LENGTH} characters`);
+  if (config.badge) {
+    if (typeof config.badge !== 'object' || config.badge === null || Array.isArray(config.badge)) {
+      errors.push('badge must be an object');
+    } else {
+      if (config.badge.label !== undefined) {
+        if (typeof config.badge.label !== 'string') {
+          errors.push('badge label must be a string');
+        } else if (config.badge.label.length > MAX_LABEL_LENGTH) {
+          errors.push(`badge label must not exceed ${MAX_LABEL_LENGTH} characters`);
+        }
+      }
+      if (config.badge.color !== undefined && typeof config.badge.color !== 'string') {
+        errors.push('badge color must be a string');
+      }
+      if (config.badge.style !== undefined) {
+        if (typeof config.badge.style !== 'string') {
+          errors.push('badge style must be a string');
+        } else if (!['flat', 'simple'].includes(config.badge.style)) {
+          errors.push('badge style must be "flat" or "simple"');
+        }
       }
     }
   }
