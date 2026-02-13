@@ -10,6 +10,13 @@
 const PLATFORM_ORDER = ['darwin', 'win32', 'linux'];
 
 /**
+ * Configuration limits for production safety
+ */
+const MAX_NAME_LENGTH = 100;
+const MAX_LABEL_LENGTH = 50;
+const MAX_URL_LENGTH = 2048;
+
+/**
  * Validate URL using native URL parser
  */
 function isValidURL(value) {
@@ -53,6 +60,8 @@ function validateConfig(config) {
 
   if (!config.name || typeof config.name !== 'string') {
     errors.push('name is required and must be a string');
+  } else if (config.name.length > MAX_NAME_LENGTH) {
+    errors.push(`name must not exceed ${MAX_NAME_LENGTH} characters`);
   }
 
   if (!config.installers || typeof config.installers !== 'object') {
@@ -76,8 +85,21 @@ function validateConfig(config) {
         errors.push(
           `installer for ${platform} must be a valid HTTP(S) URL`
         );
+      } else if (url.length > MAX_URL_LENGTH) {
+        errors.push(
+          `installer URL for ${platform} must not exceed ${MAX_URL_LENGTH} characters`
+        );
       }
     });
+  }
+
+  // Validate badge options if provided
+  if (config.badge && typeof config.badge === 'object') {
+    if (config.badge.label && typeof config.badge.label === 'string') {
+      if (config.badge.label.length > MAX_LABEL_LENGTH) {
+        errors.push(`badge label must not exceed ${MAX_LABEL_LENGTH} characters`);
+      }
+    }
   }
 
   return {
