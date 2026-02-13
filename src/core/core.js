@@ -10,6 +10,13 @@
 const PLATFORM_ORDER = ['darwin', 'win32', 'linux'];
 
 /**
+ * Configuration limits for production safety
+ */
+const MAX_NAME_LENGTH = 100;
+const MAX_LABEL_LENGTH = 50;
+const MAX_URL_LENGTH = 2048;
+
+/**
  * Validate URL using native URL parser
  */
 function isValidURL(value) {
@@ -53,6 +60,8 @@ function validateConfig(config) {
 
   if (!config.name || typeof config.name !== 'string') {
     errors.push('name is required and must be a string');
+  } else if (config.name.length > MAX_NAME_LENGTH) {
+    errors.push(`name must not exceed ${MAX_NAME_LENGTH} characters`);
   }
 
   if (!config.installers || typeof config.installers !== 'object') {
@@ -76,8 +85,37 @@ function validateConfig(config) {
         errors.push(
           `installer for ${platform} must be a valid HTTP(S) URL`
         );
+      } else if (url.length > MAX_URL_LENGTH) {
+        errors.push(
+          `installer URL for ${platform} must not exceed ${MAX_URL_LENGTH} characters`
+        );
       }
     });
+  }
+
+  // Validate badge options if provided
+  if (config.badge) {
+    if (typeof config.badge !== 'object' || config.badge === null || Array.isArray(config.badge)) {
+      errors.push('badge must be an object');
+    } else {
+      if (config.badge.label !== undefined) {
+        if (typeof config.badge.label !== 'string') {
+          errors.push('badge label must be a string');
+        } else if (config.badge.label.length > MAX_LABEL_LENGTH) {
+          errors.push(`badge label must not exceed ${MAX_LABEL_LENGTH} characters`);
+        }
+      }
+      if (config.badge.color !== undefined && typeof config.badge.color !== 'string') {
+        errors.push('badge color must be a string');
+      }
+      if (config.badge.style !== undefined) {
+        if (typeof config.badge.style !== 'string') {
+          errors.push('badge style must be a string');
+        } else if (!['flat', 'simple'].includes(config.badge.style)) {
+          errors.push('badge style must be "flat" or "simple"');
+        }
+      }
+    }
   }
 
   return {

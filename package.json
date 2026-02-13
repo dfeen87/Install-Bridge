@@ -45,7 +45,7 @@
   "files": [
     "bin/",
     "src/",
-    "test/",
+    "tests/",
     "demo/",
     "install-bridge.json",
     "README.md",

@@ -5,7 +5,6 @@
 // ============================================================================
 
 const http = require('http');
-const url = require('url');
 const core = require('../core/core');
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -42,6 +41,7 @@ function setCache(cache, key, value, limit) {
 function send(res, status, body, headers = {}) {
   res.writeHead(status, {
     'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
     'Referrer-Policy': 'no-referrer',
     ...headers
   });
@@ -72,8 +72,8 @@ function decodeConfig(param) {
 }
 
 function parseConfigFromRequest(req) {
-  const params = url.parse(req.url, true).query;
-  const encodedConfig = params.config;
+  const reqUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  const encodedConfig = reqUrl.searchParams.get('config');
   const cached = getFromCache(configCache, encodedConfig);
   if (cached) {
     return { config: cached, encodedConfig };
@@ -261,7 +261,8 @@ code { background:#f5f5f5; padding:2px 6px; border-radius:4px; }
 // ============================================================================
 
 function handleRequest(req, res) {
-  const { pathname } = url.parse(req.url);
+  const reqUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  const pathname = reqUrl.pathname;
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -269,6 +270,14 @@ function handleRequest(req, res) {
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    send(res, 405, 'Method Not Allowed', { 
+      'Content-Type': 'text/plain',
+      'Allow': 'GET, OPTIONS'
+    });
     return;
   }
 
@@ -285,9 +294,21 @@ function handleRequest(req, res) {
 
 function startServer() {
   const server = http.createServer(handleRequest);
+  
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use`);
+      process.exit(1);
+    } else {
+      console.error(`❌ Server error: ${err.message}`);
+      process.exit(1);
+    }
+  });
+  
   server.listen(PORT, () => {
     console.log(`🚀 Install Bridge server running on http://localhost:${PORT}`);
   });
+  
   return server;
 }
 
@@ -296,7 +317,24 @@ function startServer() {
 // ============================================================================
 
 if (require.main === module) {
-  startServer();
+  const server = startServer();
+  
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('Received SIGTERM, shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
+  
+  process.on('SIGINT', () => {
+    console.log('\nReceived SIGINT, shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
 }
 
 module.exports = { startServer };
