@@ -42,6 +42,8 @@ function setCache(cache, key, value, limit) {
 function send(res, status, body, headers = {}) {
   res.writeHead(status, {
     'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
     'Referrer-Policy': 'no-referrer',
     ...headers
   });
@@ -272,6 +274,14 @@ function handleRequest(req, res) {
     return;
   }
 
+  if (req.method !== 'GET') {
+    send(res, 405, 'Method Not Allowed', { 
+      'Content-Type': 'text/plain',
+      'Allow': 'GET, OPTIONS'
+    });
+    return;
+  }
+
   if (pathname === '/badge.svg') return handleBadge(req, res);
   if (pathname === '/install') return handleInstall(req, res);
   if (pathname === '/') return handleRoot(req, res);
@@ -285,9 +295,21 @@ function handleRequest(req, res) {
 
 function startServer() {
   const server = http.createServer(handleRequest);
+  
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use`);
+      process.exit(1);
+    } else {
+      console.error(`❌ Server error: ${err.message}`);
+      process.exit(1);
+    }
+  });
+  
   server.listen(PORT, () => {
     console.log(`🚀 Install Bridge server running on http://localhost:${PORT}`);
   });
+  
   return server;
 }
 
@@ -296,7 +318,24 @@ function startServer() {
 // ============================================================================
 
 if (require.main === module) {
-  startServer();
+  const server = startServer();
+  
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('Received SIGTERM, shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
+  
+  process.on('SIGINT', () => {
+    console.log('\nReceived SIGINT, shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
 }
 
 module.exports = { startServer };
