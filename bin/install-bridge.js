@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const core = require('./core');
+const core = require('../src/core/core');
 
 const CONFIG_FILE = 'install-bridge.json';
 const BADGE_FILE = 'install-badge.svg';
