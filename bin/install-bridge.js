@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const core = require('../src/core/core');
 
 const CONFIG_FILE = 'install-bridge.json';
@@ -55,16 +56,56 @@ function printSnippets(snippets) {
   console.log(snippets.html);
 }
 
+function detectGitRepo() {
+  try {
+    const remoteUrl = execSync('git remote get-url origin', { 
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe']
+    }).trim();
+
+    const appName = execSync('git rev-parse --show-toplevel', {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe']
+    }).trim().split('/').pop();
+
+    let owner, repo;
+    if (remoteUrl.includes('github.com')) {
+      const match = remoteUrl.match(/github\.com[:/]([^/]+)\/([^/.]+)/);
+      if (match) {
+        owner = match[1];
+        repo = match[2];
+      }
+    }
+
+    return { remoteUrl, appName, owner, repo };
+  } catch {
+    return null;
+  }
+}
+
 // ============================================================================
 // COMMANDS
 // ============================================================================
 
 function cmdInit() {
-  const appName = process.argv[3] || 'MyApp';
-  const template = core.createTemplate(appName);
-
   if (fs.existsSync(CONFIG_FILE)) {
     fail(`${CONFIG_FILE} already exists`);
+  }
+
+  const gitInfo = detectGitRepo();
+  const appName = process.argv[3] || gitInfo?.appName || 'MyApp';
+  
+  let template = core.createTemplate(appName);
+
+  if (gitInfo?.owner && gitInfo?.repo) {
+    const repoUrl = `https://github.com/${gitInfo.owner}/${gitInfo.repo}`;
+    template.installers = {
+      darwin: `${repoUrl}/releases/latest/download/${appName}-macOS.dmg`,
+      win32: `${repoUrl}/releases/latest/download/${appName}-windows.exe`,
+      linux: `${repoUrl}/releases/latest/download/${appName}-linux.AppImage`
+    };
+    template.homepage = repoUrl;
+    template.fallback = `${repoUrl}/releases`;
   }
 
   fs.writeFileSync(
@@ -74,6 +115,19 @@ function cmdInit() {
   );
 
   log(`Created ${CONFIG_FILE}`);
+
+  if (gitInfo?.owner && gitInfo?.repo) {
+    console.log(`\n💡 Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
+    console.log(`   URLs have been auto-populated with your repository info.`);
+  } else {
+    console.log(`\n💡 No git repository detected.`);
+    console.log(`   Edit ${CONFIG_FILE} to update placeholder URLs.`);
+  }
+
+  console.log(`\n📝 Next steps:`);
+  console.log(`   1. Review and edit ${CONFIG_FILE} as needed`);
+  console.log(`   2. Update installer URLs to match your release assets`);
+  console.log(`   3. Run: install-bridge generate`);
 }
 
 function cmdGenerate() {
@@ -84,6 +138,10 @@ function cmdGenerate() {
 
   const snippets = core.generateSnippets(config);
   printSnippets(snippets);
+
+  console.log('\n📋 Copy the snippet above and paste it into your README.md\n');
+  console.log(`💡 Badge file created: ${BADGE_FILE}`);
+  console.log(`   Commit this file to your repository to use the badge.`);
 }
 
 function cmdValidate() {
@@ -120,14 +178,24 @@ switch (command) {
     console.log(`
 Install Bridge CLI
 
-Usage:
-  install-bridge init [AppName]   Create install-bridge.json
-  install-bridge validate         Validate config
-  install-bridge generate         Generate badge and snippets
+Turn your repository into a portable install surface in 3 steps:
 
-Files:
-  - install-bridge.json
-  - install-badge.svg
+Usage:
+  install-bridge init [AppName]   Create install-bridge.json with auto-detected repo info
+  install-bridge validate         Validate your configuration
+  install-bridge generate         Generate badge and embed snippets
+
+Quick Start:
+  1. Run 'install-bridge init YourApp' in your repository
+  2. Edit install-bridge.json to customize installer URLs
+  3. Run 'install-bridge generate' to create your badge
+  4. Copy the Markdown snippet to your README.md
+
+Files Created:
+  - install-bridge.json    Configuration for your install badge
+  - install-badge.svg      The badge image to commit to your repo
+
+Learn more: https://github.com/dfeen87/install-bridge
 `);
     process.exit(0);
 }
