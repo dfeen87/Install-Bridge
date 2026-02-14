@@ -10,6 +10,33 @@ From that question came a calm, disciplined idea — give developers a way to **
 
 ---
 
+## Quick Start
+
+Create an install badge for your project in one command:
+
+```bash
+npx install-bridge setup YourApp
+```
+
+Or install globally:
+
+```bash
+npm install -g install-bridge
+install-bridge setup YourApp
+```
+
+**What this does:**
+1. ✅ Detects your GitHub repository automatically
+2. ✅ Creates `install-bridge.json` with your repo URLs pre-filled
+3. ✅ Generates `install-badge.svg` ready to use
+4. ✅ Shows you the snippet to paste in your README
+
+**Result:** Copy the Markdown snippet and paste it into your README.md. Done! 🎉
+
+For more control, see the detailed [Usage Guide](./docs/USAGE.md).
+
+---
+
 ## Origin & Philosophy
 
 This project grew out of practical conversations about keeping software honest and lightweight. Instead of building a platform, Install Bridge was designed as a **primitive** — something small, composable, and durable.
