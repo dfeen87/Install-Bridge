@@ -29,9 +29,9 @@ install-bridge setup YourApp
 1. ✅ Detects your GitHub repository automatically
 2. ✅ Creates `install-bridge.json` with your repo URLs pre-filled
 3. ✅ Generates `install-badge.svg` ready to use
-4. ✅ Shows you the snippet to paste in your README
+4. ✅ Shows you the snippet to paste in your README or any website
 
-**Result:** Copy the Markdown snippet and paste it into your README.md. Done! 🎉
+**Result:** Copy the Markdown snippet and paste it into your README.md or any website. Done! 🎉
 
 For more control, see the detailed [Usage Guide](./docs/USAGE.md).
 
