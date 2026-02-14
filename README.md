@@ -1,12 +1,12 @@
 # Install Bridge
 
-**Install Bridge** is a lightweight, open-source tool that turns software repositories into **portable install surfaces**.
+**Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
 
 It began as a focused collaboration around a simple question:
 
 > *Why is it easy to share code, but still awkward to share installation?*
 
-From that question came a calm, disciplined idea — give developers a way to **bridge their software to a single, copy-pasteable install badge** that works anywhere on the internet, without app stores, gatekeepers, or heavy infrastructure.
+From that question came a calm, disciplined idea — give developers a way to **create a single, copy-pasteable install badge** that works anywhere on the internet: README files, documentation sites, blog posts, or any website, without app stores, gatekeepers, or heavy infrastructure.
 
 ---
 
@@ -29,9 +29,9 @@ install-bridge setup YourApp
 1. ✅ Detects your GitHub repository automatically
 2. ✅ Creates `install-bridge.json` with your repo URLs pre-filled
 3. ✅ Generates `install-badge.svg` ready to use
-4. ✅ Shows you the snippet to paste in your README
+4. ✅ Shows you the snippet to paste in your README or any website
 
-**Result:** Copy the Markdown snippet and paste it into your README.md. Done! 🎉
+**Result:** Copy the Markdown snippet and paste it into your README.md or any website. Done! 🎉
 
 For more control, see the detailed [Usage Guide](./docs/USAGE.md).
 
@@ -56,15 +56,15 @@ Install Bridge is intentionally calm. It does not try to manage users, rank proj
 
 ## What Install Bridge Does
 
-Install Bridge gives each project three things:
+Install Bridge creates **install badges** for your software that you can embed anywhere on the internet.
+
+The tool gives each project three things:
 
 1. **A declarative config file** (`install-bridge.json`)
 2. **A generated install badge (SVG)**
 3. **A smart install link** that routes users to the correct installer
 
-Together, these allow a repository to be shared the way people expect modern software to be shared — through badges, icons, and links that feel familiar and trustworthy.
-
-You can paste an Install Bridge badge into:
+Together, these create a badge you can paste into:
 
 * README files
 * Documentation sites
@@ -73,7 +73,7 @@ You can paste an Install Bridge badge into:
 * Social posts
 * Internal wikis
 
-Anywhere the internet allows images and links, Install Bridge works.
+**Anywhere on the internet** — if a website allows images and links, Install Bridge badges work there.
 
 ---
 
@@ -118,7 +118,7 @@ The server is optional. The system works even without it.
 
 Modern software spreads through links, badges, and icons — but installation often lags behind.
 
-Install Bridge closes that gap by giving developers a **single, portable install surface** that:
+Install Bridge closes that gap by giving developers a **single, embeddable install badge** that:
 
 * Looks familiar
 * Feels intentional

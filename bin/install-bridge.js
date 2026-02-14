@@ -139,7 +139,7 @@ function cmdGenerate() {
   const snippets = core.generateSnippets(config);
   printSnippets(snippets);
 
-  console.log('\n📋 Copy the snippet above and paste it into your README.md\n');
+  console.log('\n📋 Copy the snippet above and paste it into your README.md or any website\n');
   console.log(`💡 Badge file created: ${BADGE_FILE}`);
   console.log(`   Commit this file to your repository to use the badge.`);
 }
@@ -209,7 +209,7 @@ function cmdSetup() {
   printSnippets(snippets);
 
   console.log('\n✨ All done! Your install badge is ready.\n');
-  console.log(`📋 Copy the Markdown snippet above and paste it into your README.md`);
+  console.log(`📋 Copy the Markdown snippet above and paste it into your README.md or any website`);
   console.log(`\n💡 Don't forget to:`);
   console.log(`   1. Commit ${CONFIG_FILE} and ${BADGE_FILE} to your repository`);
   console.log(`   2. Update installer URLs in ${CONFIG_FILE} to match your actual release assets`);
@@ -242,7 +242,7 @@ switch (command) {
     console.log(`
 Install Bridge CLI
 
-Turn your repository into a portable install surface in 3 steps:
+Create install badges for any website or README file:
 
 Usage:
   install-bridge setup [AppName]      One-step: create config and generate badge (recommended)
@@ -257,11 +257,11 @@ Or Step by Step:
   1. Run 'install-bridge init YourApp' in your repository
   2. Edit install-bridge.json to customize installer URLs
   3. Run 'install-bridge generate' to create your badge
-  4. Copy the Markdown snippet to your README.md
+  4. Copy the Markdown snippet to your README.md or any website
 
 Files Created:
   - install-bridge.json    Configuration for your install badge
-  - install-badge.svg      The badge image to commit to your repo
+  - install-badge.svg      The badge image to embed on any website
 
 Learn more: https://github.com/dfeen87/install-bridge
 `);

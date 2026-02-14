@@ -1,7 +1,7 @@
 {
   "name": "install-bridge",
   "version": "0.1.1",
-  "description": "Turn repositories into portable install surfaces",
+  "description": "Create install badges for any website or README file",
   "type": "commonjs",
 
   "bin": {

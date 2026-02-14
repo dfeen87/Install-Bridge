@@ -1,8 +1,6 @@
 # Install Bridge — Architecture
 
-Install Bridge is intentionally small. Its architecture is designed to keep
-responsibilities separated, behavior predictable, and long-term maintenance
-low.
+Install Bridge is intentionally small. Its architecture is designed to create install badges that can be embedded on any website, while keeping responsibilities separated, behavior predictable, and long-term maintenance low.
 
 This document explains how the system is structured and why.
 
@@ -87,7 +85,7 @@ The server is not required for Install Bridge to function.
 
 ## Summary
 
-Install Bridge is designed as a primitive, not a platform.
+Install Bridge is designed as a badge generator, not a platform.
 
 Each layer can be used independently, and no layer assumes more than it needs.
 This structure is intentional and considered stable as of v1.0.0.
