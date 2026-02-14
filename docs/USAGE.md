@@ -1,6 +1,6 @@
 # Install Bridge — Usage Guide
 
-This guide shows you how to create and use install badges with Install Bridge.
+This guide shows you how to create install badges that you can embed on any website or README file.
 
 ---
 
@@ -108,7 +108,7 @@ Creates `install-badge.svg` and displays embed snippets.
   <img src="./install-badge.svg" alt="Install MyApp" />
 </a>
 
-📋 Copy the snippet above and paste it into your README.md
+📋 Copy the snippet above and paste it into your README.md or any website
 
 💡 Badge file created: install-badge.svg
    Commit this file to your repository to use the badge.
