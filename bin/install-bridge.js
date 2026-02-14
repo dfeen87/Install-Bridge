@@ -155,6 +155,66 @@ function cmdValidate() {
   log('Config is valid');
 }
 
+function cmdSetup() {
+  if (fs.existsSync(CONFIG_FILE)) {
+    console.log(`⚠️  ${CONFIG_FILE} already exists.`);
+    console.log(`   Running generate command instead...`);
+    cmdGenerate();
+    return;
+  }
+
+  const gitInfo = detectGitRepo();
+  const appName = process.argv[3] || gitInfo?.appName || 'MyApp';
+  
+  let template = core.createTemplate(appName);
+
+  if (gitInfo?.owner && gitInfo?.repo) {
+    const repoUrl = `https://github.com/${gitInfo.owner}/${gitInfo.repo}`;
+    template.installers = {
+      darwin: `${repoUrl}/releases/latest/download/${appName}-macOS.dmg`,
+      win32: `${repoUrl}/releases/latest/download/${appName}-windows.exe`,
+      linux: `${repoUrl}/releases/latest/download/${appName}-linux.AppImage`
+    };
+    template.homepage = repoUrl;
+    template.fallback = `${repoUrl}/releases`;
+  }
+
+  fs.writeFileSync(
+    CONFIG_FILE,
+    JSON.stringify(template, null, 2),
+    'utf8'
+  );
+
+  log(`Created ${CONFIG_FILE}`);
+
+  if (gitInfo?.owner && gitInfo?.repo) {
+    console.log(`\n💡 Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
+    console.log(`   URLs have been auto-populated with your repository info.`);
+  } else {
+    console.log(`\n💡 No git repository detected.`);
+    console.log(`   Edit ${CONFIG_FILE} to update placeholder URLs before continuing.`);
+    console.log(`\n📝 Next steps:`);
+    console.log(`   1. Edit ${CONFIG_FILE} to update installer URLs`);
+    console.log(`   2. Run: install-bridge generate`);
+    return;
+  }
+
+  console.log(`\n🚀 Generating badge...`);
+
+  const config = template;
+  const svg = core.generateBadge(config);
+  writeBadge(svg);
+
+  const snippets = core.generateSnippets(config);
+  printSnippets(snippets);
+
+  console.log('\n✨ All done! Your install badge is ready.\n');
+  console.log(`📋 Copy the Markdown snippet above and paste it into your README.md`);
+  console.log(`\n💡 Don't forget to:`);
+  console.log(`   1. Commit ${CONFIG_FILE} and ${BADGE_FILE} to your repository`);
+  console.log(`   2. Update installer URLs in ${CONFIG_FILE} to match your actual release assets`);
+}
+
 // ============================================================================
 // ENTRY
 // ============================================================================
@@ -162,6 +222,10 @@ function cmdValidate() {
 const command = process.argv[2];
 
 switch (command) {
+  case 'setup':
+    cmdSetup();
+    break;
+
   case 'init':
     cmdInit();
     break;
@@ -181,11 +245,15 @@ Install Bridge CLI
 Turn your repository into a portable install surface in 3 steps:
 
 Usage:
-  install-bridge init [AppName]   Create install-bridge.json with auto-detected repo info
-  install-bridge validate         Validate your configuration
-  install-bridge generate         Generate badge and embed snippets
+  install-bridge setup [AppName]      One-step: create config and generate badge (recommended)
+  install-bridge init [AppName]       Create install-bridge.json with auto-detected repo info
+  install-bridge generate             Generate badge and embed snippets
+  install-bridge validate             Validate your configuration
 
-Quick Start:
+Quick Start (Easiest):
+  install-bridge setup YourApp
+
+Or Step by Step:
   1. Run 'install-bridge init YourApp' in your repository
   2. Edit install-bridge.json to customize installer URLs
   3. Run 'install-bridge generate' to create your badge
