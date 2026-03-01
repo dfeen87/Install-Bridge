@@ -333,9 +333,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-Install Bridge exists because good software deserves to be easy to share — without losing its independence.
-
-If this tool helps your work travel a little farther, then it's doing exactly what it was built to do.
+This project was developed with a combination of original ideas, hands‑on coding, and support from advanced AI systems. I would like to acknowledge **Microsoft Copilot**, **Anthropic Claude**, and **OpenAI ChatGPT** for their meaningful assistance in refining concepts, improving clarity, and strengthening the overall quality of this work.
 
 ---
 
