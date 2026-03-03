@@ -1,7 +1,6 @@
 # Install Bridge
 
 [![npm version](https://img.shields.io/npm/v/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org)
 
 **Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
@@ -325,9 +324,8 @@ The core logic is frozen, tested, and dependency-free. Future additions are expe
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-**Copyright © 2025 Don Michael Feeney Jr**
+This project is available for **non‑commercial use only** under the terms of the included LICENSE file.  
+Commercial use requires a separate paid license.
 
 ---
 
