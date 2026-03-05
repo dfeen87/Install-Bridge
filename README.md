@@ -1,7 +1,7 @@
 # Install Bridge
 
 [![npm version](https://img.shields.io/npm/v/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 
 **Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
 
@@ -95,7 +95,7 @@ node bin/install-bridge.js setup YourApp
 ```
 
 **Requirements:**
-- Node.js >= 14.0.0
+- Node.js >= 18.0.0
 - npm or npx
 
 ---
@@ -316,7 +316,7 @@ Install Bridge is intentionally small and complete.
 The core logic is frozen, tested, and dependency-free. Future additions are expected to stay minimal and aligned with the original philosophy.
 
 
-**Current Version:** v0.1.1  
+**Current Version:** v2.1.0  
 **Stability:** Stable  
 **Maintenance:** Active
 
