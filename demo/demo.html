@@ -217,6 +217,12 @@
   </div>
 
   <script>
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[c]);
+    }
+
     const Core = {
       validate(cfg) {
         const errors = [];
@@ -232,7 +238,7 @@
   <rect rx="6" width="180" height="36" fill="#111"/>
   <text x="90" y="23" fill="#fff" font-size="14" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif">
-    Install ${cfg.name}
+    Install ${escapeHtml(cfg.name)}
   </text>
 </svg>`;
       }
@@ -243,10 +249,10 @@
         const cfg = JSON.parse(config.value);
         const errors = Core.validate(cfg);
         result.innerHTML = errors.length
-          ? `<div class="error">${errors.join("<br>")}</div>`
+          ? `<div class="error">${errors.map(e => escapeHtml(e)).join("<br>")}</div>`
           : `<div class="success">Configuration valid</div>`;
       } catch (e) {
-        result.innerHTML = `<div class="error">${e.message}</div>`;
+        result.innerHTML = `<div class="error">${escapeHtml(e.message)}</div>`;
       }
     }
 
@@ -260,7 +266,7 @@
         const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
         const install = cfg.homepage || Object.values(cfg.installers)[0];
 
-        preview.innerHTML = `<a href="${install}" target="_blank">
+        preview.innerHTML = `<a href="${escapeHtml(install)}" target="_blank">
           <img src="${url}" />
         </a>`;
 
@@ -272,7 +278,7 @@
 
         result.innerHTML = `<div class="success">Badge generated</div>`;
       } catch (e) {
-        result.innerHTML = `<div class="error">${e.message}</div>`;
+        result.innerHTML = `<div class="error">${escapeHtml(e.message)}</div>`;
       }
     }
 

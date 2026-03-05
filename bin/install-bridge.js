@@ -83,18 +83,9 @@ function detectGitRepo() {
   }
 }
 
-// ============================================================================
-// COMMANDS
-// ============================================================================
-
-function cmdInit() {
-  if (fs.existsSync(CONFIG_FILE)) {
-    fail(`${CONFIG_FILE} already exists`);
-  }
-
+function buildTemplate(appNameOverride) {
   const gitInfo = detectGitRepo();
-  const appName = process.argv[3] || gitInfo?.appName || 'MyApp';
-  
+  const appName = appNameOverride || gitInfo?.appName || 'MyApp';
   let template = core.createTemplate(appName);
 
   if (gitInfo?.owner && gitInfo?.repo) {
@@ -107,6 +98,20 @@ function cmdInit() {
     template.homepage = repoUrl;
     template.fallback = `${repoUrl}/releases`;
   }
+
+  return { template, appName, gitInfo };
+}
+
+// ============================================================================
+// COMMANDS
+// ============================================================================
+
+function cmdInit() {
+  if (fs.existsSync(CONFIG_FILE)) {
+    fail(`${CONFIG_FILE} already exists`);
+  }
+
+  const { template, appName, gitInfo } = buildTemplate(process.argv[3]);
 
   fs.writeFileSync(
     CONFIG_FILE,
@@ -163,21 +168,7 @@ function cmdSetup() {
     return;
   }
 
-  const gitInfo = detectGitRepo();
-  const appName = process.argv[3] || gitInfo?.appName || 'MyApp';
-  
-  let template = core.createTemplate(appName);
-
-  if (gitInfo?.owner && gitInfo?.repo) {
-    const repoUrl = `https://github.com/${gitInfo.owner}/${gitInfo.repo}`;
-    template.installers = {
-      darwin: `${repoUrl}/releases/latest/download/${appName}-macOS.dmg`,
-      win32: `${repoUrl}/releases/latest/download/${appName}-windows.exe`,
-      linux: `${repoUrl}/releases/latest/download/${appName}-linux.AppImage`
-    };
-    template.homepage = repoUrl;
-    template.fallback = `${repoUrl}/releases`;
-  }
+  const { template, appName, gitInfo } = buildTemplate(process.argv[3]);
 
   fs.writeFileSync(
     CONFIG_FILE,
@@ -222,23 +213,15 @@ function cmdSetup() {
 const command = process.argv[2];
 
 switch (command) {
-  case 'setup':
-    cmdSetup();
+  case '--version':
+  case '-v':
+    console.log(require('../package.json').version);
+    process.exit(0);
     break;
 
-  case 'init':
-    cmdInit();
-    break;
-
-  case 'generate':
-    cmdGenerate();
-    break;
-
-  case 'validate':
-    cmdValidate();
-    break;
-
-  default:
+  case '--help':
+  case '-h':
+  case undefined:
     console.log(`
 Install Bridge CLI
 
@@ -266,4 +249,26 @@ Files Created:
 Learn more: https://github.com/dfeen87/install-bridge
 `);
     process.exit(0);
+    break;
+
+  case 'setup':
+    cmdSetup();
+    break;
+
+  case 'init':
+    cmdInit();
+    break;
+
+  case 'generate':
+    cmdGenerate();
+    break;
+
+  case 'validate':
+    cmdValidate();
+    break;
+
+  default:
+    console.error(`Unknown command: ${command}`);
+    console.error(`Run 'install-bridge --help' for usage information.`);
+    process.exit(1);
 }

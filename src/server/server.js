@@ -7,7 +7,18 @@
 const http = require('http');
 const core = require('../core/core');
 
-const PORT = Number(process.env.PORT) || 3000;
+const SHUTDOWN_TIMEOUT = 5000;
+
+function parsePort(envValue, fallback = 3000) {
+  if (envValue === undefined || envValue === '') return fallback;
+  const port = Number(envValue);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    console.error(`Invalid PORT value: "${envValue}". Using default ${fallback}.`);
+    return fallback;
+  }
+  return port;
+}
+const PORT = parsePort(process.env.PORT);
 const MAX_CONFIG_SIZE = 8 * 1024; // 8KB safety limit
 const CONFIG_CACHE_LIMIT = 200;
 const BADGE_CACHE_LIMIT = 200;
@@ -49,13 +60,7 @@ function send(res, status, body, headers = {}) {
 }
 
 function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
+  return core.escapeXml(value);
 }
 
 function decodeConfig(param) {
@@ -71,9 +76,25 @@ function decodeConfig(param) {
   return buf.toString('utf8');
 }
 
+function validateRedirectUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    if (parsed.username || parsed.password) return null;
+    return parsed.href;
+  } catch {
+    return null;
+  }
+}
+
 function parseConfigFromRequest(req) {
   const reqUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const encodedConfig = reqUrl.searchParams.get('config');
+
+  if (!encodedConfig || typeof encodedConfig !== 'string') {
+    throw new Error('Missing config parameter');
+  }
+
   const cached = getFromCache(configCache, encodedConfig);
   if (cached) {
     return { config: cached, encodedConfig };
@@ -126,17 +147,28 @@ function handleInstall(req, res) {
     const target = core.getInstallTarget(config, os);
 
     if (target.available) {
-      send(res, 302, '', { Location: target.url });
+      const safeUrl = validateRedirectUrl(target.url);
+      if (!safeUrl) {
+        send(res, 400, 'Invalid redirect URL', { 'Content-Type': 'text/plain' });
+        return;
+      }
+      send(res, 302, '', { Location: safeUrl });
       return;
     }
 
     if (target.fallback) {
-      send(res, 302, '', { Location: target.fallback });
+      const safeFallback = validateRedirectUrl(target.fallback);
+      if (!safeFallback) {
+        send(res, 400, 'Invalid fallback URL', { 'Content-Type': 'text/plain' });
+        return;
+      }
+      send(res, 302, '', { Location: safeFallback });
       return;
     }
 
     send(res, 200, generateFallbackPage(config, os), {
-      'Content-Type': 'text/html; charset=utf-8'
+      'Content-Type': 'text/html; charset=utf-8',
+      'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
     });
 
   } catch (err) {
@@ -252,7 +284,8 @@ code { background:#f5f5f5; padding:2px 6px; border-radius:4px; }
 </ul>
 </body>
 </html>`, {
-    'Content-Type': 'text/html; charset=utf-8'
+    'Content-Type': 'text/html; charset=utf-8',
+    'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
   });
 }
 
@@ -318,22 +351,29 @@ function startServer() {
 
 if (require.main === module) {
   const server = startServer();
-  
-  // Graceful shutdown
-  process.on('SIGTERM', () => {
-    console.log('Received SIGTERM, shutting down gracefully...');
+
+  function gracefulShutdown(server) {
+    const timer = setTimeout(() => {
+      console.error('Shutdown timed out, forcing exit');
+      process.exit(1);
+    }, SHUTDOWN_TIMEOUT);
+    timer.unref();
     server.close(() => {
+      clearTimeout(timer);
       console.log('Server closed');
       process.exit(0);
     });
+  }
+
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('Received SIGTERM, shutting down gracefully...');
+    gracefulShutdown(server);
   });
   
   process.on('SIGINT', () => {
     console.log('\nReceived SIGINT, shutting down gracefully...');
-    server.close(() => {
-      console.log('Server closed');
-      process.exit(0);
-    });
+    gracefulShutdown(server);
   });
 }
 

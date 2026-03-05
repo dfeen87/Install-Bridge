@@ -1,6 +1,6 @@
 {
   "name": "install-bridge",
-  "version": "0.1.1",
+  "version": "2.1.0",
   "description": "Create install badges for any website or README file",
   "type": "commonjs",
 
@@ -28,7 +28,7 @@
   "license": "MIT",
 
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
 
   "repository": {

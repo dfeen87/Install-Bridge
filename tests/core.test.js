@@ -302,4 +302,103 @@ test('createTemplate: generates valid config', () => {
   assert(validation.valid === true, 'Template should be valid');
 });
 
+test('validateConfig: rejects whitespace-only name', () => {
+  const config = {
+    name: '   ',
+    installers: { darwin: 'https://example.com/app.dmg' }
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === false, 'Should be invalid');
+  assert(result.errors.some(e => e.includes('name')), 'Should mention name error');
+});
+
+test('validateConfig: rejects name exceeding max length', () => {
+  const config = {
+    name: 'A'.repeat(101),
+    installers: { darwin: 'https://example.com/app.dmg' }
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === false, 'Should be invalid');
+  assert(result.errors.some(e => e.includes('exceed')), 'Should mention length limit');
+});
+
+test('validateConfig: rejects invalid homepage URL', () => {
+  const config = {
+    name: 'TestApp',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    homepage: 'not-a-url'
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === false, 'Should be invalid');
+  assert(result.errors.some(e => e.includes('homepage')), 'Should mention homepage error');
+});
+
+test('validateConfig: rejects invalid fallback URL', () => {
+  const config = {
+    name: 'TestApp',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    fallback: 'ftp://example.com/downloads'
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === false, 'Should be invalid');
+  assert(result.errors.some(e => e.includes('fallback')), 'Should mention fallback error');
+});
+
+test('validateConfig: accepts valid homepage and fallback', () => {
+  const config = {
+    name: 'TestApp',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    homepage: 'https://example.com',
+    fallback: 'https://example.com/downloads'
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === true, 'Should be valid');
+});
+
+test('validateConfig: rejects javascript: protocol URLs', () => {
+  const config = {
+    name: 'TestApp',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    homepage: 'javascript:alert(1)'
+  };
+  const result = core.validateConfig(config);
+  assert(result.valid === false, 'javascript: URL should be rejected');
+  assert(result.errors.some(e => e.includes('homepage')), 'Should mention homepage error');
+});
+
+test('normalizeBadgeColor: returns fallback for invalid color', () => {
+  const config = {
+    name: 'TestApp',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    badge: { color: 'notacolor' }
+  };
+  const svg = core.generateBadge(config);
+  assert(svg.includes('#0366d6'), 'Should fall back to default color');
+});
+
+test('detectOS: does not false-positive on substring "win" in other contexts', () => {
+  const ua = 'Swin Browser/1.0 X11';
+  assert(core.detectOS(ua) !== 'win32', 'Swin should not match windows');
+});
+
+test('generateSnippets: escapes special characters in name', () => {
+  const config = {
+    name: 'My[App](test)',
+    installers: { darwin: 'https://example.com/app.dmg' },
+    homepage: 'https://example.com'
+  };
+  const snippets = core.generateSnippets(config);
+  assert(!snippets.markdown.includes('[App](test)'), 'Unescaped brackets/parens should not appear in markdown');
+  assert(snippets.markdown.includes('\\[App\\]\\(test\\)'), 'Markdown special chars should be backslash-escaped');
+  assert(snippets.html.includes('My[App](test)'), 'HTML alt text should contain the original name unescaped');
+});
+
+test('createTemplate: uses default name when none provided', () => {
+  const template = core.createTemplate();
+  assert(template.name === 'MyApp', 'Default name should be MyApp');
+  assert(template.installers, 'Should have installers');
+  const validation = core.validateConfig(template);
+  assert(validation.valid === true, 'Default template should be valid');
+});
+
 console.log('\n✨ All tests completed\n');

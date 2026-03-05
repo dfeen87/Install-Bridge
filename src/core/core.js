@@ -58,8 +58,8 @@ function validateConfig(config) {
     return { valid: false, errors: ['Config must be an object'] };
   }
 
-  if (!config.name || typeof config.name !== 'string') {
-    errors.push('name is required and must be a string');
+  if (!config.name || typeof config.name !== 'string' || config.name.trim().length === 0) {
+    errors.push('name is required and must be a non-empty string');
   } else if (config.name.length > MAX_NAME_LENGTH) {
     errors.push(`name must not exceed ${MAX_NAME_LENGTH} characters`);
   }
@@ -118,6 +118,17 @@ function validateConfig(config) {
     }
   }
 
+  if (config.homepage !== undefined) {
+    if (typeof config.homepage !== 'string' || !isValidURL(config.homepage)) {
+      errors.push('homepage must be a valid HTTP(S) URL');
+    }
+  }
+  if (config.fallback !== undefined) {
+    if (typeof config.fallback !== 'string' || !isValidURL(config.fallback)) {
+      errors.push('fallback must be a valid HTTP(S) URL');
+    }
+  }
+
   return {
     valid: errors.length === 0,
     errors
@@ -146,7 +157,7 @@ function detectOS(userAgent) {
     return 'linux';
   }
 
-  if (ua.includes('win')) {
+  if (ua.includes('windows')) {
     return 'win32';
   }
 
@@ -251,12 +262,16 @@ function generateSnippets(
     return { markdown: '', html: '' };
   }
 
+  // Escape for safe embedding
+  const safeName = String(config.name).replace(/[\[\]()\\]/g, '\\$&');
+  const safeNameHtml = escapeXml(config.name);
+
   const markdown =
-    `[![Install ${config.name}](${badgePath})](${targetURL})`;
+    `[![Install ${safeName}](${badgePath})](${targetURL})`;
 
   const html =
-`<a href="${targetURL}">
-  <img src="${badgePath}" alt="Install ${config.name}" />
+`<a href="${escapeXml(targetURL)}">
+  <img src="${escapeXml(badgePath)}" alt="Install ${safeNameHtml}" />
 </a>`;
 
   return { markdown, html };
@@ -315,7 +330,11 @@ const InstallBridgeCore = {
   generateBadge,
   generateSnippets,
   parseConfig,
-  createTemplate
+  createTemplate,
+  escapeXml,
+  isValidURL,
+  normalizeBadgeColor,
+  getFirstInstaller
 };
 
 module.exports = InstallBridgeCore;
