@@ -13,10 +13,10 @@ install-bridge setup YourApp
 ```
 
 This single command:
-1. ✅ Detects your GitHub repository
-2. ✅ Creates `install-bridge.json` with your repo URLs
-3. ✅ Generates your badge as `install-badge.svg`
-4. ✅ Shows you the embed snippet to copy
+1. Detects your GitHub repository
+2. Creates `install-bridge.json` with your repo URLs
+3. Generates your badge as `install-badge.svg`
+4. Shows you the embed snippet to copy
 
 **What happens:**
 - If you're in a git repository with a GitHub remote, it auto-detects your repo info
@@ -42,15 +42,15 @@ This creates `install-bridge.json` with:
 
 **Example output:**
 ```
-✔ Created install-bridge.json
+Info: Created install-bridge.json
 
-💡 Detected GitHub repository: user/repo
-   URLs have been auto-populated with your repository info.
+Info: Detected GitHub repository: user/repo
+      URLs have been auto-populated with your repository info.
 
-📝 Next steps:
-   1. Review and edit install-bridge.json as needed
-   2. Update installer URLs to match your release assets
-   3. Run: install-bridge generate
+Note: Next steps:
+      1. Review and edit install-bridge.json as needed
+      2. Update installer URLs to match your release assets
+      3. Run: install-bridge generate
 ```
 
 ### 2. Customize Your Configuration (Optional)
@@ -96,7 +96,7 @@ Creates `install-badge.svg` and displays embed snippets.
 
 **Example output:**
 ```
-✔ Generated install-badge.svg
+Info: Generated install-badge.svg
 
 --- Markdown ---
 
@@ -108,10 +108,10 @@ Creates `install-badge.svg` and displays embed snippets.
   <img src="./install-badge.svg" alt="Install MyApp" />
 </a>
 
-📋 Copy the snippet above and paste it into your README.md or any website
+Note: Copy the snippet above and paste it into your README.md or any website
 
-💡 Badge file created: install-badge.svg
-   Commit this file to your repository to use the badge.
+Info: Badge file created: install-badge.svg
+      Commit this file to your repository to use the badge.
 ```
 
 ---
@@ -173,7 +173,7 @@ install-bridge setup AwesomeTool
 2. Commit both files (`install-bridge.json` and `install-badge.svg`)
 3. Paste the Markdown snippet in your README.md
 
-Done! 🎉
+Setup complete.
 
 ---
 

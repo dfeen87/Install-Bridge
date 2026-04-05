@@ -99,7 +99,7 @@ Defaults are applied when fields are omitted.
 
 ## Stability Guarantee
 
-As of **v1.0.0**, the configuration schema is considered **stable**.
+As of **v2.0.1**, the configuration schema is considered **stable**.
 
 Fields will not be removed or redefined without a major version bump.
 
@@ -107,13 +107,13 @@ Fields will not be removed or redefined without a major version bump.
 
 # Install Bridge — Stability & Guarantees
 
-This document defines what v1.0.0 means for Install Bridge.
+This document defines what v2.0.1 means for Install Bridge.
 
 It exists to set clear expectations for users and maintainers.
 
 ---
 
-## What v1.0.0 Guarantees
+## What v2.0.1 Guarantees
 
 - The CLI command surface is stable
 - The `install-bridge.json` schema is stable

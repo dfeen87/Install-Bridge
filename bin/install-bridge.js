@@ -18,12 +18,12 @@ const BADGE_FILE = 'install-badge.svg';
 // ============================================================================
 
 function fail(message) {
-  console.error(`❌ ${message}`);
+  console.error(`Error: ${message}`);
   process.exit(1);
 }
 
 function log(message) {
-  console.log(`✔ ${message}`);
+  console.log(`Info: ${message}`);
 }
 
 function readConfig() {
@@ -122,17 +122,17 @@ function cmdInit() {
   log(`Created ${CONFIG_FILE}`);
 
   if (gitInfo?.owner && gitInfo?.repo) {
-    console.log(`\n💡 Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
-    console.log(`   URLs have been auto-populated with your repository info.`);
+    console.log(`\nInfo: Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
+    console.log(`      URLs have been auto-populated with your repository info.`);
   } else {
-    console.log(`\n💡 No git repository detected.`);
-    console.log(`   Edit ${CONFIG_FILE} to update placeholder URLs.`);
+    console.log(`\nInfo: No git repository detected.`);
+    console.log(`      Edit ${CONFIG_FILE} to update placeholder URLs.`);
   }
 
-  console.log(`\n📝 Next steps:`);
-  console.log(`   1. Review and edit ${CONFIG_FILE} as needed`);
-  console.log(`   2. Update installer URLs to match your release assets`);
-  console.log(`   3. Run: install-bridge generate`);
+  console.log(`\nNote: Next steps:`);
+  console.log(`      1. Review and edit ${CONFIG_FILE} as needed`);
+  console.log(`      2. Update installer URLs to match your release assets`);
+  console.log(`      3. Run: install-bridge generate`);
 }
 
 function cmdGenerate() {
@@ -144,9 +144,9 @@ function cmdGenerate() {
   const snippets = core.generateSnippets(config);
   printSnippets(snippets);
 
-  console.log('\n📋 Copy the snippet above and paste it into your README.md or any website\n');
-  console.log(`💡 Badge file created: ${BADGE_FILE}`);
-  console.log(`   Commit this file to your repository to use the badge.`);
+  console.log('\nNote: Copy the snippet above and paste it into your README.md or any website\n');
+  console.log(`Info: Badge file created: ${BADGE_FILE}`);
+  console.log(`      Commit this file to your repository to use the badge.`);
 }
 
 function cmdValidate() {
@@ -162,8 +162,8 @@ function cmdValidate() {
 
 function cmdSetup() {
   if (fs.existsSync(CONFIG_FILE)) {
-    console.log(`⚠️  ${CONFIG_FILE} already exists.`);
-    console.log(`   Running generate command instead...`);
+    console.log(`Warning: ${CONFIG_FILE} already exists.`);
+    console.log(`         Running generate command instead...`);
     cmdGenerate();
     return;
   }
@@ -179,18 +179,18 @@ function cmdSetup() {
   log(`Created ${CONFIG_FILE}`);
 
   if (gitInfo?.owner && gitInfo?.repo) {
-    console.log(`\n💡 Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
-    console.log(`   URLs have been auto-populated with your repository info.`);
+    console.log(`\nInfo: Detected GitHub repository: ${gitInfo.owner}/${gitInfo.repo}`);
+    console.log(`      URLs have been auto-populated with your repository info.`);
   } else {
-    console.log(`\n💡 No git repository detected.`);
-    console.log(`   Edit ${CONFIG_FILE} to update placeholder URLs before continuing.`);
-    console.log(`\n📝 Next steps:`);
-    console.log(`   1. Edit ${CONFIG_FILE} to update installer URLs`);
-    console.log(`   2. Run: install-bridge generate`);
+    console.log(`\nInfo: No git repository detected.`);
+    console.log(`      Edit ${CONFIG_FILE} to update placeholder URLs before continuing.`);
+    console.log(`\nNote: Next steps:`);
+    console.log(`      1. Edit ${CONFIG_FILE} to update installer URLs`);
+    console.log(`      2. Run: install-bridge generate`);
     return;
   }
 
-  console.log(`\n🚀 Generating badge...`);
+  console.log(`\nInfo: Generating badge...`);
 
   const config = template;
   const svg = core.generateBadge(config);
@@ -199,11 +199,11 @@ function cmdSetup() {
   const snippets = core.generateSnippets(config);
   printSnippets(snippets);
 
-  console.log('\n✨ All done! Your install badge is ready.\n');
-  console.log(`📋 Copy the Markdown snippet above and paste it into your README.md or any website`);
-  console.log(`\n💡 Don't forget to:`);
-  console.log(`   1. Commit ${CONFIG_FILE} and ${BADGE_FILE} to your repository`);
-  console.log(`   2. Update installer URLs in ${CONFIG_FILE} to match your actual release assets`);
+  console.log('\nSetup complete. Your install badge is ready.\n');
+  console.log(`Note: Copy the Markdown snippet above and paste it into your README.md or any website`);
+  console.log(`\nNote: Don't forget to:`);
+  console.log(`      1. Commit ${CONFIG_FILE} and ${BADGE_FILE} to your repository`);
+  console.log(`      2. Update installer URLs in ${CONFIG_FILE} to match your actual release assets`);
 }
 
 // ============================================================================

@@ -330,16 +330,16 @@ function startServer() {
   
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use`);
+      console.error(`Error: Port ${PORT} is already in use`);
       process.exit(1);
     } else {
-      console.error(`❌ Server error: ${err.message}`);
+      console.error(`Error: Server error: ${err.message}`);
       process.exit(1);
     }
   });
   
   server.listen(PORT, () => {
-    console.log(`🚀 Install Bridge server running on http://localhost:${PORT}`);
+    console.log(`Info: Install Bridge server running on http://localhost:${PORT}`);
   });
   
   return server;

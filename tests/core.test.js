@@ -13,11 +13,11 @@ let HAS_FAILURES = false;
 function test(name, fn) {
   try {
     fn();
-    console.log(`✅ ${name}`);
+    console.log(`PASS: ${name}`);
   } catch (err) {
     HAS_FAILURES = true;
-    console.error(`❌ ${name}`);
-    console.error(`   ${err && err.message ? err.message : String(err)}`);
+    console.error(`FAIL: ${name}`);
+    console.error(`      ${err && err.message ? err.message : String(err)}`);
   }
 }
 
@@ -30,7 +30,7 @@ function assert(condition, message) {
 // Ensure process exits non-zero if any test fails
 process.on('exit', () => {
   if (HAS_FAILURES) {
-    console.error('\n❌ Some tests failed\n');
+    console.error('\nError: Some tests failed\n');
     process.exitCode = 1;
   }
 });
@@ -39,7 +39,7 @@ process.on('exit', () => {
 // TESTS
 // ============================================================================
 
-console.log('\n🧪 Running Install Bridge Core Tests\n');
+console.log('\nInfo: Running Install Bridge Core Tests\n');
 
 // ---------------------------------------------------------------------------
 // Config Validation
@@ -401,4 +401,4 @@ test('createTemplate: uses default name when none provided', () => {
   assert(validation.valid === true, 'Default template should be valid');
 });
 
-console.log('\n✨ All tests completed\n');
+console.log('\nInfo: All tests completed\n');

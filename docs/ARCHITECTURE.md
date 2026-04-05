@@ -88,4 +88,4 @@ The server is not required for Install Bridge to function.
 Install Bridge is designed as a badge generator, not a platform.
 
 Each layer can be used independently, and no layer assumes more than it needs.
-This structure is intentional and considered stable as of v1.0.0.
+This structure is intentional and considered stable as of v2.0.1.
