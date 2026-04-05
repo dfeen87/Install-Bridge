@@ -5,9 +5,7 @@
 
 **Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
 
-> *Why is it easy to share code, but still awkward to share installation?*
-
-From that question came a calm, disciplined idea — give developers a way to **create a single, copy-pasteable install badge** that works anywhere on the internet: README files, documentation sites, blog posts, or any website, without app stores, gatekeepers, or heavy infrastructure.
+Install Bridge provides developers with an efficient, minimal tool to **create a single, copy-pasteable install badge** that works anywhere on the internet: README files, documentation sites, blog posts, or any website, without app stores, gatekeepers, or heavy infrastructure.
 
 ---
 
@@ -47,26 +45,26 @@ install-bridge setup YourApp
 ```
 
 **What this does:**
-1. ✅ Detects your GitHub repository automatically
-2. ✅ Creates `install-bridge.json` with your repo URLs pre-filled
-3. ✅ Generates `install-badge.svg` ready to use
-4. ✅ Shows you the snippet to paste in your README or any website
+1. Detects your GitHub repository automatically
+2. Creates `install-bridge.json` with your repo URLs pre-filled
+3. Generates `install-badge.svg` ready to use
+4. Shows you the snippet to paste in your README or any website
 
-**Result:** Copy the Markdown snippet and paste it into your README.md or any website. Done! 🎉
+**Result:** Copy the Markdown snippet and paste it into your README.md or any website. Setup complete.
 
 ---
 
 ## Features
 
-✨ **Simple & Fast** — Create install badges in seconds with one command  
-🎯 **Platform-Aware** — Smart routing to correct installers based on user's OS  
-🎨 **Customizable** — Full control over badge appearance and styling  
-🔗 **Universal Embedding** — Works on README files, docs, blogs, wikis, and any website  
-📦 **Declarative Config** — Simple JSON configuration with auto-detection  
-🚀 **Zero Dependencies** — Lightweight core with no external dependencies  
-🌐 **Optional Server** — Can run as HTTP service or purely locally  
-🔒 **Transparent** — Users can review source before installing  
-🏷️ **Repository-First** — Your repo stays the source of truth
+- **Simple & Fast** — Create install badges in seconds with one command
+- **Platform-Aware** — Smart routing to correct installers based on user's OS
+- **Customizable** — Full control over badge appearance and styling
+- **Universal Embedding** — Works on README files, docs, blogs, wikis, and any website
+- **Declarative Config** — Simple JSON configuration with auto-detection
+- **Zero Dependencies** — Lightweight core with no external dependencies
+- **Optional Server** — Can run as HTTP service or purely locally
+- **Transparent** — Users can review source before installing
+- **Repository-First** — Your repo stays the source of truth
 
 ---
 
@@ -111,10 +109,10 @@ npx install-bridge setup YourApp
 ```
 
 This command will:
-1. ✅ Detect your GitHub repository automatically
-2. ✅ Create `install-bridge.json` with your repo URLs pre-filled
-3. ✅ Generate `install-badge.svg` ready to use
-4. ✅ Show you the snippet to paste in your README or any website
+1. Detect your GitHub repository automatically
+2. Create `install-bridge.json` with your repo URLs pre-filled
+3. Generate `install-badge.svg` ready to use
+4. Show you the snippet to paste in your README or any website
 
 ### Advanced Usage
 
@@ -169,12 +167,12 @@ After running `install-bridge setup MyApp`, you'll get:
 
 Install Bridge badges work anywhere on the internet:
 
-* ✅ README files
-* ✅ Documentation sites
-* ✅ Blog posts
-* ✅ Issue trackers
-* ✅ Social posts
-* ✅ Internal wikis
+- README files
+- Documentation sites
+- Blog posts
+- Issue trackers
+- Social posts
+- Internal wikis
 
 **Anywhere** — if a website allows images and links, Install Bridge badges work there.
 
@@ -223,12 +221,12 @@ For detailed technical documentation, see [ARCHITECTURE.md](./docs/ARCHITECTURE.
 
 Install Bridge is especially useful for:
 
-* 🌟 Open-source projects
-* 🛠️ Developer tools
-* 🔧 Internal utilities
-* 🧪 Experimental software
-* 🔬 Research prototypes
-* 💡 Indie applications
+- Open-source projects
+- Developer tools
+- Internal utilities
+- Experimental software
+- Research prototypes
+- Indie applications
 
 Anywhere distribution matters, but overhead should stay low.
 
@@ -281,10 +279,10 @@ This project grew out of practical conversations about keeping software honest a
 
 ### Guiding Principles
 
-* 📚 Repositories remain the source of truth
-* 🎯 Installation should be one click, not a paragraph
-* 🌐 Distribution should be portable, not centralized
-* 📖 Tooling should stay readable and dependency-free
+- Repositories remain the source of truth
+- Installation should be one click, not a paragraph
+- Distribution should be portable, not centralized
+- Tooling should stay readable and dependency-free
 
 Install Bridge is intentionally calm. It does not try to manage users, rank projects, collect analytics, or lock anyone in. It exists to make sharing software easier — and then get out of the way.
 
@@ -298,10 +296,10 @@ Modern software spreads through links, badges, and icons — but installation of
 
 Install Bridge closes that gap by giving developers a **single, embeddable install badge** that:
 
-* ✨ Looks familiar
-* 🎯 Feels intentional
-* 🔐 Respects user autonomy
-* 👤 Keeps control with the project
+- Looks familiar
+- Feels intentional
+- Respects user autonomy
+- Keeps control with the project
 
 It is not an app store.  
 It is not a marketplace.  
@@ -311,12 +309,11 @@ It is not a marketplace.
 
 ## Status
 
-Install Bridge is intentionally small and complete.
+Install Bridge is a feature-complete and stable distribution utility.
 
 The core logic is frozen, tested, and dependency-free. Future additions are expected to stay minimal and aligned with the original philosophy.
 
-
-**Current Version:** v2.1.0  
+**Current Version:** v2.0.1
 **Stability:** Stable  
 **Maintenance:** Active
 
@@ -324,14 +321,8 @@ The core logic is frozen, tested, and dependency-free. Future additions are expe
 
 ## License
 
-This project is available for **non‑commercial use only** under the terms of the included LICENSE file.  
-Commercial use requires a separate paid license.
-
----
-
-## Acknowledgments
-
-This project was developed with a combination of original ideas, hands‑on coding, and support from advanced AI systems. I would like to acknowledge **Microsoft Copilot**, **Anthropic Claude**, and **OpenAI ChatGPT** for their meaningful assistance in refining concepts, improving clarity, and strengthening the overall quality of this work.
+This project uses a hybrid license. It is available for **non‑commercial use** under the terms of the included LICENSE file.
+Commercial use requires a separate paid license. Contact the author for details.
 
 ---
 

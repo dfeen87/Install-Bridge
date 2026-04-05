@@ -1,6 +1,6 @@
 {
   "name": "install-bridge",
-  "version": "2.1.0",
+  "version": "2.0.1",
   "description": "Create install badges for any website or README file",
   "type": "commonjs",
 
