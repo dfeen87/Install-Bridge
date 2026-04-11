@@ -9,8 +9,10 @@
   },
 
   "scripts": {
-    "test": "node tests/core.test.js",
-    "start": "node src/server/server.js"
+    "test": "node tests/core.test.js && node tests/cli.test.js && node tests/server.test.js",
+    "start": "node src/server/server.js",
+    "prepack": "npm test",
+    "verify-pack": "npm pack --dry-run 2>&1 | grep 'npm notice' | grep -E '(bin/|src/|README|LICENSE)'"
   },
 
   "keywords": [
@@ -33,21 +35,18 @@
 
   "repository": {
     "type": "git",
-    "url": "https://github.com/dfeen87/install-bridge.git"
+    "url": "https://github.com/dfeen87/Install-Bridge.git"
   },
 
   "bugs": {
-    "url": "https://github.com/dfeen87/install-bridge/issues"
+    "url": "https://github.com/dfeen87/Install-Bridge/issues"
   },
 
-  "homepage": "https://github.com/dfeen87/install-bridge",
+  "homepage": "https://github.com/dfeen87/Install-Bridge",
 
   "files": [
     "bin/",
     "src/",
-    "tests/",
-    "demo/",
-    "install-bridge.json",
     "README.md",
     "LICENSE"
   ]

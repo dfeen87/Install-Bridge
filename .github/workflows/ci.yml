@@ -26,3 +26,12 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Verify published tarball contents
+        run: |
+          OUTPUT=$(npm pack --dry-run 2>&1)
+          echo "$OUTPUT"
+          echo "$OUTPUT" | grep -q "bin/install-bridge.js" || (echo "ERROR: bin/install-bridge.js missing from tarball" && exit 1)
+          echo "$OUTPUT" | grep -q "src/core/core.js"      || (echo "ERROR: src/core/core.js missing from tarball" && exit 1)
+          echo "$OUTPUT" | grep -q "src/server/server.js"  || (echo "ERROR: src/server/server.js missing from tarball" && exit 1)
+          echo "Pack verification passed."

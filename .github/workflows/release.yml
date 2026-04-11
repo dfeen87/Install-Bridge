@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Publish to npm and create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to create GitHub Releases
+      id-token: write   # needed for npm provenance
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run tests
+        run: npm test
+
+      - name: Verify published tarball contents
+        run: |
+          OUTPUT=$(npm pack --dry-run 2>&1)
+          echo "$OUTPUT"
+          echo "$OUTPUT" | grep -q "bin/install-bridge.js" || (echo "ERROR: bin/install-bridge.js missing from tarball" && exit 1)
+          echo "$OUTPUT" | grep -q "src/core/core.js"      || (echo "ERROR: src/core/core.js missing from tarball" && exit 1)
+          echo "$OUTPUT" | grep -q "src/server/server.js"  || (echo "ERROR: src/server/server.js missing from tarball" && exit 1)
+          echo "Pack verification passed."
+
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = context.ref.replace('refs/tags/', '');
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+              name: tag,
+              generate_release_notes: true,
+              draft: false,
+              prerelease: tag.includes('-')
+            });
