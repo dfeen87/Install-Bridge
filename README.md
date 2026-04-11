@@ -1,6 +1,5 @@
 # Install Bridge
 
-[![npm version](https://img.shields.io/npm/v/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 
 **Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
