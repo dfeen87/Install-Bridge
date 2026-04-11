@@ -1,6 +1,11 @@
 # Install Bridge
 
+[![CI](https://github.com/dfeen87/Install-Bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/dfeen87/Install-Bridge/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
+[![npm downloads](https://img.shields.io/npm/dm/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
+[![License](https://img.shields.io/badge/license-Non--Commercial-red.svg)](./LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/dfeen87/Install-Bridge.svg)](https://github.com/dfeen87/Install-Bridge/issues)
 
 **Install Bridge** is a lightweight, open-source tool that creates **install badges** for your software — badges you can add to any website on the internet.
 
@@ -16,6 +21,7 @@ Install Bridge provides developers with an efficient, minimal tool to **create a
 - [Usage](#usage)
 - [Examples](#examples)
 - [Architecture](#architecture)
+- [Repository Structure](#repository-structure)
 - [Who This Is For](#who-this-is-for)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
@@ -213,6 +219,40 @@ A stateless wrapper.
 The server is optional. The system works even without it.
 
 For detailed technical documentation, see [ARCHITECTURE.md](./docs/ARCHITECTURE.md).
+
+---
+
+## Repository Structure
+
+```
+Install-Bridge/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml              # CI pipeline (Node 18, 20, 22 matrix)
+│       └── release.yml         # Automated release workflow
+├── bin/
+│   └── install-bridge.js       # CLI entry point
+├── demo/
+│   └── demo.html               # Interactive browser demo
+├── docs/
+│   ├── ARCHITECTURE.md         # Technical architecture & design principles
+│   ├── CONFIG_AND_STABILITY.md # Configuration reference & stability policy
+│   └── USAGE.md                # Detailed usage guide & examples
+├── src/
+│   ├── core/
+│   │   └── core.js             # Pure core logic (validation, SVG generation, platform detection)
+│   └── server/
+│       └── server.js           # Optional HTTP server (badge serving & install redirects)
+├── tests/
+│   ├── cli.test.js             # CLI integration tests
+│   ├── core.test.js            # Core unit tests
+│   └── server.test.js          # Server unit tests
+├── .gitignore
+├── install-bridge.json         # Example configuration file
+├── LICENSE                     # Non-commercial license
+├── package.json
+└── README.md
+```
 
 ---
 
