@@ -29,6 +29,8 @@ function assert(condition, message) {
 // Helpers
 // ---------------------------------------------------------------------------
 
+const REQUEST_TIMEOUT_MS = 5000;
+
 function findFreePort() {
   return new Promise((resolve, reject) => {
     const srv = net.createServer();
@@ -51,7 +53,7 @@ function httpGet(port, path, headers = {}) {
       }
     );
     req.on('error', reject);
-    req.setTimeout(5000, () => reject(new Error('Request timed out')));
+    req.setTimeout(REQUEST_TIMEOUT_MS, () => reject(new Error('Request timed out')));
   });
 }
 

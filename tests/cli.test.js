@@ -311,7 +311,7 @@ test('setup creates install-bridge.json and install-badge.svg when git repo pres
   // Use this repo's directory so git is available
   const tmp = makeTmpDir();
   try {
-    // Initialise a bare git repo so detectGitRepo works
+    // Initialize a bare git repo so detectGitRepo works
     const { spawnSync: sp } = require('child_process');
     sp('git', ['init'], { cwd: tmp, encoding: 'utf8' });
     sp('git', ['remote', 'add', 'origin', 'https://github.com/example/SmokeApp.git'], { cwd: tmp, encoding: 'utf8' });
