@@ -249,7 +249,7 @@ Install-Bridge/
 │   └── server.test.js          # Server unit tests
 ├── .gitignore
 ├── install-bridge.json         # Example configuration file
-├── LICENSE                     # Non-commercial license
+├── LICENSE                     # MIT License
 ├── package.json
 └── README.md
 ```
@@ -360,8 +360,13 @@ The core logic is frozen, tested, and dependency-free. Future additions are expe
 
 ## License
 
-This project uses a hybrid license. It is available for **non‑commercial use** under the terms of the included LICENSE file.
-Commercial use requires a separate paid license. Contact the author for details.
+This project is 100% open-source and distributed under the MIT License.
+You are free to use, modify, and distribute this software under the terms of the included LICENSE file.
+
+---
+
+## Enterprise Consulting & Integration
+This architecture is fully open-source under the MIT License. If your organization requires custom scaling, proprietary integration, or dedicated technical consulting to deploy these models at an enterprise level, please reach out at: dfeen87@gmail.com
 
 ---
 
