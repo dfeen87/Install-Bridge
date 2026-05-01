@@ -1,5 +1,6 @@
 # Install Bridge
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/dfeen87/Install-Bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/dfeen87/Install-Bridge/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
 [![npm downloads](https://img.shields.io/npm/dm/install-bridge.svg)](https://www.npmjs.com/package/install-bridge)
