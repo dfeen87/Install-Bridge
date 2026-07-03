@@ -6,7 +6,8 @@ Semantic Ingestion Engine for the Semantic Dropdown Search API
 [![CI](https://github.com/dfeen87/Install-Bridge/workflows/CI/badge.svg)](https://github.com/dfeen87/Install-Bridge/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-Install‑Bridge 3.0.0 is a **fully‑typed Python CLI** that serves as the ingestion gateway for the **Semantic Dropdown Search API (v2.0.0)**.  
+> Install‑Bridge 3.0.0 is a **fully‑typed Python CLI** that serves as the ingestion gateway for the **Semantic Dropdown Search API (v2.0.0)**.  
+
 It transforms media and creative artifacts—YouTube videos, images, articles, audio, and Pinterest boards—into deterministic semantic descriptors and optional embeddings.
 
 Install‑Bridge is the foundation of a **semantic creation platform**, enabling cross‑modal indexing and search.
