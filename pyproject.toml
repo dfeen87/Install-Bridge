@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "install-bridge"
+version = "3.0.0"
+description = "Install-Bridge 3.0: Semantic ingestion CLI feeding the Semantic Dropdown Search API"
+authors = ["Don Feeney <dfeen87@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "install_bridge"}]
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = "^0.9.0"
+httpx = "^0.27.0"
+spacy = "^3.7.4"
+yt-dlp = "^2024.4.9"
+newspaper3k = "^0.2.8"
+beautifulsoup4 = "^4.12.3"
+Pillow = "^10.3.0"
+platformdirs = "^4.2.0"
+sentence-transformers = "^2.7.0"
+transformers = "^4.40.1"
+torch = {version = "^2.3.0", source = "pytorch"}
+lxml-html-clean = "^0.4.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[tool.poetry.scripts]
+bridge = "install_bridge.cli.main:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
