@@ -1,80 +1,112 @@
-# Install-Bridge 3.0
+# **Install‑Bridge**  
+Semantic Ingestion Engine for the Semantic Dropdown Search API
 
-Install-Bridge 3.0 is a semantic ingestion CLI that feeds the Semantic Dropdown Search API (v2.0.0).
-It is designed to be the ingestion gateway for a semantic creation platform, taking various media types and converting them into semantic descriptors and optional embeddings before indexing them.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-3.0.0-orange.svg)](VERSION)
+[![CI](https://github.com/dfeen87/Install-Bridge/workflows/CI/badge.svg)](https://github.com/dfeen87/Install-Bridge/actions)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-## Philosophy
+Install‑Bridge 3.0.0 is a **fully‑typed Python CLI** that serves as the ingestion gateway for the **Semantic Dropdown Search API (v2.0.0)**.  
+It transforms media and creative artifacts—YouTube videos, images, articles, audio, and Pinterest boards—into deterministic semantic descriptors and optional embeddings.
 
-- **Lightweight & Developer-friendly:** Simple CLI commands built on Typer.
-- **Deterministic-first:** Rule-based descriptor generation using `spacy` ensures stability and reproducibility.
-- **Optional Embeddings:** Native support for `sentence-transformers` and `transformers` (CLIP), which can be toggled via config.
-- **Seamless Integration:** Native client for POSTing payloads to the `/semantic-index` endpoint.
+Install‑Bridge is the foundation of a **semantic creation platform**, enabling cross‑modal indexing and search.
 
-## Installation
+---
 
-Install-Bridge 3.0 uses `poetry` for dependency management.
+## **Philosophy**
+
+- **Lightweight & Developer‑Friendly** — Built on Typer for intuitive CLI ergonomics.  
+- **Deterministic‑First** — Rule‑based descriptor generation powered by **spaCy** ensures reproducibility.  
+- **Optional Embeddings** — CPU‑only support for **sentence‑transformers** and **CLIP**, configurable via global settings.  
+- **Seamless Integration** — Native client for POSTing ingestion payloads to the `/semantic-index` endpoint.
+
+---
+
+## **Installation**
+
+Install‑Bridge uses **Poetry** for dependency management.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/dfeen87/Install-Bridge/
 cd Install-Bridge
 poetry install
 ```
 
-The CLI will be available via `poetry run bridge`.
-If you want to use it globally, you can install the wheel or simply alias `poetry run bridge`.
+Run the CLI:
 
-## Configuration
+```bash
+poetry run bridge
+```
 
-Settings are stored globally in your user configuration directory (e.g., `~/.config/install-bridge/config.json`).
+To use globally, install the wheel or alias the command.
+
+---
+
+## **Configuration**
+
+Install‑Bridge stores settings in your global user configuration directory  
+(e.g., `~/.config/install-bridge/config.json`).
 
 Show current configuration:
+
 ```bash
 bridge config show
 ```
 
-Set a configuration value:
+Set configuration values:
+
 ```bash
 bridge config set use_embeddings true
 bridge config set api_url http://your-semantic-api.com:8000
 ```
 
-### Available Keys
-- `api_url`
-- `use_embeddings` (true/false)
-- `embedding_model`
-- `image_model`
-- `audio_model`
-- `log_level`
+### **Available Keys**
+- `api_url`  
+- `use_embeddings` (true/false)  
+- `embedding_model`  
+- `image_model`  
+- `audio_model`  
+- `log_level`  
 
-## Ingestion Commands
+---
 
-All commands extract metadata, generate descriptors (and optionally embeddings), and send a unified payload to the Semantic API.
+## **Ingestion Commands**
 
-**YouTube:**
+Each ingestion module extracts metadata, generates deterministic descriptors, optionally computes embeddings, and sends a unified payload to the Semantic API.
+
+### **YouTube**
 ```bash
 bridge ingest youtube <url>
 ```
 
-**Pinterest (Mocked extraction for now):**
+### **Pinterest** *(Mocked extraction for now)*
 ```bash
 bridge ingest pinterest <board_url>
 ```
 
-**Image (Local file or URL):**
+### **Image**
 ```bash
 bridge ingest image <file_or_url>
 ```
 
-**Article:**
+### **Article**
 ```bash
 bridge ingest article <url>
 ```
 
-**Audio:**
+### **Audio**
 ```bash
 bridge ingest audio <file_or_url>
 ```
 
-## Extending Descriptors
+---
 
-The architecture supports a clean extension point for proprietary rules. You can update `install_bridge/descriptors/proprietary_rules.py` to inject custom heuristics into the semantic descriptors for any ingestion module.
+## **Extending Descriptors**
+
+Install‑Bridge supports proprietary semantic rules via:
+
+```
+install_bridge/descriptors/proprietary_rules.py
+```
+
+You can inject custom heuristics for any ingestion module, enabling domain‑specific semantic enrichment.
