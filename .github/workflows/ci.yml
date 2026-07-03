@@ -8,30 +8,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
+          python-version: "3.11"
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.8.3"
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: poetry install --no-interaction --no-root
 
       - name: Run tests
-        run: npm test
-
-      - name: Verify published tarball contents
-        run: |
-          OUTPUT=$(npm pack --dry-run 2>&1)
-          echo "$OUTPUT"
-          echo "$OUTPUT" | grep -q "bin/install-bridge.js" || (echo "ERROR: bin/install-bridge.js missing from tarball" && exit 1)
-          echo "$OUTPUT" | grep -q "src/core/core.js"      || (echo "ERROR: src/core/core.js missing from tarball" && exit 1)
-          echo "$OUTPUT" | grep -q "src/server/server.js"  || (echo "ERROR: src/server/server.js missing from tarball" && exit 1)
-          echo "Pack verification passed."
+        run: poetry run pytest -q
