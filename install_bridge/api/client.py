@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 class SemanticAPIClient:
     def __init__(self):
         self.api_url = get_config_value("api_url")
+        if not isinstance(self.api_url, str) or not self.api_url.strip():
+            raise ValueError("Configuration value 'api_url' must be a non-empty string")
+        self.api_url = self.api_url.strip()
         self.endpoint = f"{self.api_url.rstrip('/')}/semantic-index"
 
     def index_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:

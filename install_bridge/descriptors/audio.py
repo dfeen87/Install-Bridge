@@ -4,9 +4,9 @@ from .proprietary_rules import apply_audio_rules
 
 class AudioDescriptorGenerator(BaseDescriptorGenerator):
     def generate(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        title = data.get("title", "")
-        lyrics = data.get("lyrics", "")
-        genre = data.get("genre", "Unknown")
+        title = data.get("title") or ""
+        lyrics = data.get("lyrics") or ""
+        genre = data.get("genre") or "Unknown"
 
         combined_text = f"{title}. {lyrics}"
         keywords = self.extract_keywords(combined_text)
@@ -22,7 +22,7 @@ class AudioDescriptorGenerator(BaseDescriptorGenerator):
 
     def _derive_mood(self, data: Dict[str, Any]) -> list[str]:
         # Simple placeholder heuristic
-        genre = data.get("genre", "").lower()
+        genre = (data.get("genre") or "").lower()
         if "rock" in genre or "metal" in genre:
             return ["energetic", "intense"]
         elif "ambient" in genre or "classical" in genre:

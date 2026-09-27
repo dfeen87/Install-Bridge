@@ -1,4 +1,3 @@
-import hashlib
 import uuid
 from typing import Dict, Any
 
@@ -25,6 +24,8 @@ class YouTubeIngestionModule(BaseIngestionModule):
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(source, download=False)
+        if not isinstance(info, dict):
+            raise ValueError(f"Unable to extract YouTube metadata from {source}")
 
         metadata = {
             "title": info.get("title", ""),

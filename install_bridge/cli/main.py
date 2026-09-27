@@ -65,6 +65,7 @@ def process_ingestion(module, source: str):
         typer.echo(json.dumps(response, indent=2))
     except Exception as e:
         typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(code=1) from e
 
 @ingest_app.command("youtube")
 def ingest_youtube(url: str = typer.Argument(..., help="YouTube URL to ingest")):

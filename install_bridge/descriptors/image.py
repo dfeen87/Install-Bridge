@@ -4,7 +4,7 @@ from .proprietary_rules import apply_image_rules
 
 class ImageDescriptorGenerator(BaseDescriptorGenerator):
     def generate(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        filename = data.get("filename", "")
+        filename = data.get("filename") or ""
         # Palette will be extracted in the ingestion phase using PIL and passed here
         palette = data.get("palette", [])
 
@@ -22,7 +22,7 @@ class ImageDescriptorGenerator(BaseDescriptorGenerator):
 
     def _derive_style_tags(self, data: Dict[str, Any]) -> List[str]:
         # Simple heuristic, to be expanded
-        format_type = data.get("format", "").lower()
+        format_type = (data.get("format") or "").lower()
         if format_type in ["jpeg", "jpg"]:
             return ["photographic"]
         elif format_type in ["png"]:

@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, mock_open
+from unittest.mock import patch
 from install_bridge.config.settings import load_config, set_config_value, DEFAULT_CONFIG
 
 @patch("install_bridge.config.settings.get_config_path")
@@ -20,6 +20,15 @@ def test_load_config_custom(mock_path, tmp_path):
     assert config["api_url"] == "http://example.com"
     # Ensure other defaults are maintained
     assert config["use_embeddings"] == DEFAULT_CONFIG["use_embeddings"]
+
+
+@patch("install_bridge.config.settings.get_config_path")
+def test_load_config_ignores_non_object_json(mock_path, tmp_path):
+    config_file = tmp_path / "config.json"
+    mock_path.return_value = config_file
+    config_file.write_text("[]")
+
+    assert load_config() == DEFAULT_CONFIG
 
 @patch("install_bridge.config.settings.get_config_path")
 @patch("install_bridge.config.settings.get_config_dir")
