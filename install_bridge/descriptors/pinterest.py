@@ -4,9 +4,9 @@ from .proprietary_rules import apply_pinterest_rules
 
 class PinterestDescriptorGenerator(BaseDescriptorGenerator):
     def generate(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        title = data.get("title", "")
-        description = data.get("description", "")
-        captions = data.get("captions", [])
+        title = data.get("title") or ""
+        description = data.get("description") or ""
+        captions = data.get("captions") or []
 
         combined_text = f"{title}. {description}. " + " ".join(captions)
         keywords = self.extract_keywords(combined_text)

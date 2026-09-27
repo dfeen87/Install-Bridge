@@ -1,6 +1,6 @@
 import json
-import os
 from pathlib import Path
+from typing import Any, Optional
 from platformdirs import user_config_dir
 
 APP_NAME = "install-bridge"
@@ -27,6 +27,8 @@ def load_config() -> dict:
         with open(config_path, "r", encoding="utf-8") as f:
             try:
                 user_config = json.load(f)
+                if not isinstance(user_config, dict):
+                    return DEFAULT_CONFIG.copy()
                 config = DEFAULT_CONFIG.copy()
                 config.update(user_config)
                 return config
@@ -54,6 +56,6 @@ def set_config_value(key: str, value: str) -> None:
 
     save_config(config)
 
-def get_config_value(key: str) -> str:
+def get_config_value(key: str) -> Optional[Any]:
     config = load_config()
-    return config.get(key, None)
+    return config.get(key)

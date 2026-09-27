@@ -30,3 +30,9 @@ def test_api_client_http_error(mock_post, mock_config):
 
     with pytest.raises(httpx.HTTPStatusError):
         client.index_payload({"test": "data"})
+
+
+@patch("install_bridge.api.client.get_config_value", return_value=None)
+def test_api_client_rejects_missing_url(mock_config):
+    with pytest.raises(ValueError, match="api_url"):
+        SemanticAPIClient()

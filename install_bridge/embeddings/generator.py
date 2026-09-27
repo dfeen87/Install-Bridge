@@ -1,6 +1,6 @@
 from typing import Any
 import logging
-from typing import List, Optional, Union
+from typing import List, Optional
 from PIL.Image import Image
 
 from ..config.settings import get_config_value
