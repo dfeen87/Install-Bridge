@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "install-bridge"
-version = "3.0.0"
-description = "Install-Bridge 3.0: Semantic ingestion CLI feeding the Semantic Dropdown Search API"
+version = "3.1.0"
+description = "Install-Bridge 3.1: Semantic ingestion CLI feeding the Semantic Dropdown Search API"
 authors = ["Don Feeney <dfeen87@users.noreply.github.com>"]
 readme = "README.md"
 packages = [{include = "install_bridge"}]
