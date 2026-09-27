@@ -13,7 +13,7 @@ from ..ingestion import (
     AudioIngestionModule
 )
 
-app = typer.Typer(help="Install-Bridge 3.0: Semantic Ingestion CLI")
+app = typer.Typer(help="Install-Bridge 3.1: Semantic Ingestion CLI")
 config_app = typer.Typer(help="Manage configuration settings")
 ingest_app = typer.Typer(help="Ingest and index content")
 
